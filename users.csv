@@ -5,3 +5,26 @@ import pandas as pd
 headers = {
     'Authorization': 'Bearer YOUR_TOKEN'
 }
+def fetch_users_in_boston():
+    users = []
+    url = 'https://api.github.com/search/users?q=location:Boston+followers:>100'
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    for user in data['items']:
+        user_details = requests.get(user['url'], headers=headers).json()
+        users.append({
+            'login': user_details.get('login', ''),
+            'name': user_details.get('name', ''),
+            'company': (user_details.get('company', '') or '').lstrip('@').upper().strip(),
+            'location': user_details.get('location', ''),
+            'email': user_details.get('email', ''),
+            'hireable': user_details.get('hireable', ''),
+            'bio': user_details.get('bio', ''),
+            'public_repos': user_details.get('public_repos', 0),
+            'followers': user_details.get('followers', 0),
+            'following': user_details.get('following', 0),
+            'created_at': user_details.get('created_at', '')
+        })
+    return users
+
