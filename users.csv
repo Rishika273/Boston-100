@@ -1,0 +1,7 @@
+pip install requests pandas
+import requests
+import pandas as pd
+# Replace YOUR_TOKEN with your actual GitHub API token
+headers = {
+    'Authorization': 'Bearer YOUR_TOKEN'
+}
